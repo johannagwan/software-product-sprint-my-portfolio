@@ -18,7 +18,9 @@
 function addRandomFact() {
   const greetings =
       ['I sleep 12 hours long on weekends and still take a 4-hour nap sometimes', 
-      'I have no official surname', 'I have telegram sticker for every situation', 'I am very boring'];
+      'I have no official surname', 
+      'I have telegram sticker for every situation', 
+      'I am very boring'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
