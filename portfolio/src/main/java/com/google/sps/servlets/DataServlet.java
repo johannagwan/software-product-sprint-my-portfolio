@@ -35,8 +35,7 @@ public class DataServlet extends HttpServlet {
   public void init() {
     quotes = new ArrayList<>();
     quotes.add(
-        "A ship in port is safe, but that is not what ships are for. "
-            + "Sail out to sea and do new things. - Grace Hopper");
+        "A ship in port is safe, but that is not what ships are for.");
     quotes.add("They told me computers could only do arithmetic. - Grace Hopper");
     quotes.add("A ship in port is safe, but that's not what ships are built for. - Grace Hopper");
   }

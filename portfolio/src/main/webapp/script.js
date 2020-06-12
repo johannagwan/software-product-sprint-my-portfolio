@@ -15,7 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomFact() {
+/*function addRandomFact() {
   const greetings =
       ['I sleep 12 hours long on weekends and still take a 4-hour nap sometimes', 
       'I have no official surname', 
@@ -26,12 +26,37 @@ function addRandomFact() {
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
+  const greetingContainer = document.getElementById('quote-container');
   greetingContainer.innerText = greeting;
 }
 
 async function getRandomQuoteUsingAsyncAwait() {
   const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('quote-container').innerText = quote;
+  const responseText = await response.text();
+  document.getElementById('quote-container').innerText = responseText;
+}*/
+
+/**
+ * Fetches stats from the servers and adds them to the DOM.
+ */
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const commentsListElement = document.getElementById('quote-container');
+    commentsListElement.innerHTML = '';
+
+    comments.forEach((comment) => {
+      commentsListElement.appendChild(
+        createListElement(comment));
+    });
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
