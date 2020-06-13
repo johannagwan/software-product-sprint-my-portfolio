@@ -15,9 +15,13 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -29,26 +33,41 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> quotes;
-
-  @Override
-  public void init() {
-    quotes = new ArrayList<>();
-    quotes.add(
-        "A ship in port is safe, but that is not what ships are for.");
-    quotes.add("They told me computers could only do arithmetic. - Grace Hopper");
-    quotes.add("A ship in port is safe, but that's not what ships are built for. - Grace Hopper");
-  }
+  private List<Comment> comments = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println(convertToJsonUsingGson(quotes));
+    response.setContentType("application/json");
+    String json = new Gson().toJson(comments);
+    response.getWriter().println(json);
   }
 
-  private String convertToJsonUsingGson(List list) {
-    Gson gson = new Gson();
-    String json = gson.toJson(list);
-    return json;
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form
+    String username = getParameter(request, "user-name", "").trim();
+    String commentText = getParameter(request, "text-input", "").trim();  
+    
+    Date date = new Date();
+    DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
+    String timestamp = dateFormat.format(date);
+    
+    Comment comment = new Comment(username, commentText, timestamp);
+    comments.add(comment);
+    
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }

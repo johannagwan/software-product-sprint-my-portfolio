@@ -22,7 +22,7 @@
         <h1>Welcome to Johanna's Portfolio</h1>
         <img src="/images/me.png" alt="Johanna's photo" style="width:150px;height:150px;">
         <p>Click here to get a fun fact about me:</p>
-        <button onclick="getComments()">Hello</button>
+        <button onclick="getRandomFacts()">Hello</button>
         <div id="quote-container"></div>
       </div>
 
@@ -89,8 +89,23 @@
             </figure>          
           </div>
         </div>
-
       </div>
+
+      <form action="/data" method="POST">
+        <h2>Say hi to me!</h2>
+        <p>Name: </p>
+        <textarea name="user-name" required></textarea>
+        <p>Comment: </p>
+        <textarea name="text-input" required></textarea>
+        <br/><br/>
+        <input type="submit" />
+      </form>
+
+      <div class="comment-section">
+        <h2>See what others have said to me!</h2>
+        <div id="comments-container"></div>
+      </div>
+      
     </div>
   </body>
 

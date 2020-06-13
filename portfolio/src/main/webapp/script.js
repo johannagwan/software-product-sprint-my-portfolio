@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+document.addEventListener("DOMContentLoaded", function(){
+  getComments();
+});
+
+
 /**
  * Adds a random greeting to the page.
  */
-/*function addRandomFact() {
+function addRandomFact() {
   const greetings =
       ['I sleep 12 hours long on weekends and still take a 4-hour nap sometimes', 
       'I have no official surname', 
@@ -30,33 +35,58 @@
   greetingContainer.innerText = greeting;
 }
 
-async function getRandomQuoteUsingAsyncAwait() {
-  const response = await fetch('/data');
-  const responseText = await response.text();
-  document.getElementById('quote-container').innerText = responseText;
-}*/
-
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
 function getComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
-    // stats is an object, not a string, so we have to
+    // comments is an object, not a string, so we have to
     // reference its fields to create HTML content
-
-    const commentsListElement = document.getElementById('quote-container');
+    const commentsListElement = document.getElementById('comments-container');
     commentsListElement.innerHTML = '';
 
-    comments.forEach((comment) => {
-      commentsListElement.appendChild(
-        createListElement(comment));
+    comments.map((comment) => {
+      commentsListElement.appendChild(createListElement(comment));
+      //commentsListElement.appendChild(createCommentSection(comment));
     });
   });
 }
 
 /** Creates an <li> element containing text. */
-function createListElement(text) {
+function createListElement(comment) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.innerText = "USERNAME: " + comment.username + " COMMENT: " + comment.commentBody;
   return liElement;
+}
+
+function createCommentSection(comment) {
+  const commentWrapper = document.createElement("div");
+  commentWrapper.id = "comment-wrapper";
+
+  commentWrapper.innerHTML = '<div id="comment-header"> <p id="username-display"></p>\
+    <p id="timestamp-display"></p></div> <p id="comment-display"></p> <hr class="solid" />';
+  
+  const commentHeader = document.getElementById("comment-header");
+
+  const usernameDisplay = document.getElementById("username-display");
+  usernameDisplay.innerHTML = comment.username;
+  
+  const timestampDisplay = document.getElementById("timestamp-display");
+  timestampDisplay.innerHTML = comment.timestamp;
+
+  const commentDisplay = document.getElementById("comment-display");
+  commentDisplay.innerHTML = comment.commentBody;
+
+  const divider = document.createElement("hr");
+
+  // Append username and timestamp to comment header
+  commentHeader.appendChild(usernameDisplay);
+  commentHeader.appendChild(timestampDisplay);
+
+  // Append child nodes to comment wrapper
+  commentWrapper.appendChild(commentHeader);
+  commentWrapper.appendChild(commentDisplay);
+  commentWrapper.append(divide);
+
+  return commentWrapper;
 }
