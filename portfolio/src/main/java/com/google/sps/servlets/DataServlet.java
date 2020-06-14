@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
@@ -36,13 +39,29 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<Comment> comments = new ArrayList<>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
-    String json = new Gson().toJson(comments);
-    response.getWriter().println(json);
+    // Create Query for Datastore
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      //long id = entity.getKey().getId();
+      String username = (String) entity.getProperty("username");
+      String commentBody = (String) entity.getProperty("commentBody"); 
+      String timestamp = (String) entity.getProperty("timestamp");
+
+      Comment comment = new Comment(username, commentBody, timestamp);
+      comments.add(comment);
+    }
+
+    Gson gson = new Gson();
+
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(comments));
   }
 
   @Override
@@ -62,9 +81,6 @@ public class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-
-    Comment comment = new Comment(username, commentBody, timestamp);
-    comments.add(comment);
     
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html#comment-section");
