@@ -14,6 +14,10 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 
@@ -45,17 +49,25 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
     String username = getParameter(request, "user-name", "").trim();
-    String commentText = getParameter(request, "text-input", "").trim();  
+    String commentBody = getParameter(request, "text-input", "").trim();  
     
     Date date = new Date();
     DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
     String timestamp = dateFormat.format(date);
     
-    Comment comment = new Comment(username, commentText, timestamp);
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("username", username);
+    commentEntity.setProperty("commentBody", commentBody);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    Comment comment = new Comment(username, commentBody, timestamp);
     comments.add(comment);
     
     // Redirect back to the HTML page.
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/index.html#comment-section");
   }
 
   /**
