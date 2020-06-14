@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
 /**
  * Adds a random greeting to the page.
  */
-function addRandomFact() {
+function getRandomFacts() {
   const greetings =
       ['I sleep 12 hours long on weekends and still take a 4-hour nap sometimes', 
       'I have no official surname', 
