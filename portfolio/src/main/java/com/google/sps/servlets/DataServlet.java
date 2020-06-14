@@ -49,7 +49,6 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      //long id = entity.getKey().getId();
       String username = (String) entity.getProperty("username");
       String commentBody = (String) entity.getProperty("commentBody"); 
       String timestamp = (String) entity.getProperty("timestamp");
@@ -67,12 +66,12 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
-    String username = getParameter(request, "user-name", "").trim();
-    String commentBody = getParameter(request, "text-input", "").trim();  
+    String username = getParameter(request, "user-name").trim();
+    String commentBody = getParameter(request, "text-input").trim();  
     
     Date date = new Date();
-    DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");  
-    String timestamp = dateFormat.format(date);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy hh:mm z");  
+    String timestamp = dateFormat.format(date).toString();
     
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("username", username);
@@ -90,11 +89,8 @@ public class DataServlet extends HttpServlet {
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client
    */
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getParameter(HttpServletRequest request, String name) {
     String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
     return value;
   }
 }
