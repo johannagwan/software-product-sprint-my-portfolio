@@ -115,6 +115,16 @@
     text-align: center;
   }
 
+  #username-display {
+    font-weight: bold;
+  }
+
+  #timestamp-display {
+    font-size: 10px;
+    font-weight: lighter;
+    font-style: italic;
+  }
+
   .footer {
       position: relative;
       bottom:0;
