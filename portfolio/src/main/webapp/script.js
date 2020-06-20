@@ -46,47 +46,17 @@ function getComments() {
     commentsListElement.innerHTML = '';
 
     comments.map((comment) => {
-      commentsListElement.appendChild(createListElement(comment));
-      //commentsListElement.appendChild(createCommentSection(comment));
+      commentsListElement.appendChild(createCommentSection(comment));
     });
   });
-}
-
-/** Creates an <li> element containing text. */
-function createListElement(comment) {
-  const liElement = document.createElement('li');
-  liElement.innerText = "USERNAME: " + comment.username + " COMMENT: " + comment.commentBody;
-  return liElement;
 }
 
 function createCommentSection(comment) {
   const commentWrapper = document.createElement("div");
   commentWrapper.id = "comment-wrapper";
-
-  commentWrapper.innerHTML = '<div id="comment-header"> <p id="username-display"></p>\
-    <p id="timestamp-display"></p></div> <p id="comment-display"></p> <hr class="solid" />';
-  
-  const commentHeader = document.getElementById("comment-header");
-
-  const usernameDisplay = document.getElementById("username-display");
-  usernameDisplay.innerHTML = comment.username;
-  
-  const timestampDisplay = document.getElementById("timestamp-display");
-  timestampDisplay.innerHTML = comment.timestamp;
-
-  const commentDisplay = document.getElementById("comment-display");
-  commentDisplay.innerHTML = comment.commentBody;
-
-  const divider = document.createElement("hr");
-
-  // Append username and timestamp to comment header
-  commentHeader.appendChild(usernameDisplay);
-  commentHeader.appendChild(timestampDisplay);
-
-  // Append child nodes to comment wrapper
-  commentWrapper.appendChild(commentHeader);
-  commentWrapper.appendChild(commentDisplay);
-  commentWrapper.append(divide);
+  commentWrapper.innerHTML = `<div id="comment-header"> <p id="username-display">${comment.username}</p>\
+    <p id="timestamp-display">${comment.timestamp}</p> </div> <p id="comment-display">${comment.commentBody}</p>\
+    <hr class="solid" />`
 
   return commentWrapper;
 }
