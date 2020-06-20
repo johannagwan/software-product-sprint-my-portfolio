@@ -39,19 +39,24 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private final String COMMENT = "Comment";
+  private final String USERNAME = "username";
+  private final String COMMENT_BODY = "commentBody";
+  private final String TIMESTAMP = "timestamp";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Create Query for Datastore
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query(COMMENT).addSort(TIMESTAMP, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      String username = (String) entity.getProperty("username");
-      String commentBody = (String) entity.getProperty("commentBody"); 
-      String timestamp = (String) entity.getProperty("timestamp");
+      String username = (String) entity.getProperty(USERNAME);
+      String commentBody = (String) entity.getProperty(COMMENT_BODY); 
+      String timestamp = (String) entity.getProperty(TIMESTAMP);
 
       Comment comment = new Comment(username, commentBody, timestamp);
       comments.add(comment);
@@ -73,10 +78,10 @@ public class DataServlet extends HttpServlet {
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy hh:mm z");  
     String timestamp = dateFormat.format(date).toString();
     
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("username", username);
-    commentEntity.setProperty("commentBody", commentBody);
-    commentEntity.setProperty("timestamp", timestamp);
+    Entity commentEntity = new Entity(COMMENT);
+    commentEntity.setProperty(USERNAME, username);
+    commentEntity.setProperty(COMMENT_BODY, commentBody);
+    commentEntity.setProperty(TIMESTAMP, timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
