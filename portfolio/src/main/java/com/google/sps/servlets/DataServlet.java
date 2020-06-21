@@ -71,8 +71,8 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
-    String username = getParameter(request, "user-name").trim();
-    String commentBody = getParameter(request, "text-input").trim();  
+    String username = request.getParameter("user-name").trim();
+    String commentBody = request.getParameter("text-input").trim();  
     
     Date date = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy hh:mm z");  
@@ -88,14 +88,5 @@ public class DataServlet extends HttpServlet {
     
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html#comment-section");
-  }
-
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
-  private String getParameter(HttpServletRequest request, String name) {
-    String value = request.getParameter(name);
-    return value;
   }
 }
