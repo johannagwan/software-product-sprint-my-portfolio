@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", function(){
   getComments();
 });
 
-const selectElement = document.querySelector('#languageCode');
-if (selectElement != null) {
-  selectElement.addEventListener('change', (event) => {
-    getComments();
-  });
-}
+// const selectElement = document.querySelector('#languageCode');
+// if (selectElement != null) {
+//   selectElement.addEventListener('change', (event) => {
+//     getComments();
+//   });
+// }
 
 /**
  * Adds a random greeting to the page.
