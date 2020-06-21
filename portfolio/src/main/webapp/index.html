@@ -106,12 +106,12 @@
         <h2>See what others have said to me!</h2>
         <p>
           <label>Select language</label>
-          <select id = "languageCode">
-            <option value = "en" >english</option>
-            <option value = "zh">chinese</option>
-            <option value = "id">indonesian</option>
-            <option value = "ko">korean</option>
-          </select>
+            <select id="languageCode" onchange="getComments();">
+              <option value = "en">english</option>
+              <option value = "zh">chinese</option>
+              <option value = "id">indonesian</option>
+              <option value = "ko">korean</option>
+            </select>
        </p>
         <div id="comments-container"></div>
       </div>

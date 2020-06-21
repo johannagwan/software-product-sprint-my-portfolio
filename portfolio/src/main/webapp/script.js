@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function(){
   getComments();
 });
 
+const selectElement = document.querySelector('#languageCode');
+if (selectElement != null) {
+  selectElement.addEventListener('change', (event) => {
+    getComments();
+  });
+}
 
 /**
  * Adds a random greeting to the page.
@@ -39,7 +45,9 @@ function getRandomFacts() {
  * Fetches stats from the servers and adds them to the DOM.
  */
 function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+  var language = document.getElementById("languageCode").value;
+
+  fetch('/data?languageCode=' + language).then(response => response.json()).then((comments) => {
     // comments is an object, not a string, so we have to
     // reference its fields to create HTML content
     const commentsListElement = document.getElementById('comments-container');
