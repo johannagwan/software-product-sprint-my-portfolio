@@ -69,12 +69,17 @@ public class DataServlet extends HttpServlet {
       String commentBody = (String) entity.getProperty(COMMENT_BODY); 
       String timestamp = (String) entity.getProperty(TIMESTAMP);
 
-      // Do the translation.
-      Translation translation =
+      // Do the translation for comment body.
+      Translation commentBodyTranslation =
         translate.translate(commentBody, Translate.TranslateOption.targetLanguage(languageCode));
-      String commentBodyTranslatedText = translation.getTranslatedText();
+      String commentBodyTranslatedText = commentBodyTranslation.getTranslatedText();
 
-      Comment comment = new Comment(username, commentBodyTranslatedText, timestamp);
+      // Do the translation for timestamp.
+      Translation timestampTranslation =
+        translate.translate(timestamp, Translate.TranslateOption.targetLanguage(languageCode));
+      String timestampTranslatedText = timestampTranslation.getTranslatedText();
+
+      Comment comment = new Comment(username, commentBodyTranslatedText, timestampTranslatedText);
       comments.add(comment);
     }
 
