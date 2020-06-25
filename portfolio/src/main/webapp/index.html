@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="setSelections();">
     <div class="header">
       <a href="index.html" class="logo">Johanna</a>
       <div class="header-right">
@@ -105,13 +105,15 @@
       <div id="comment-section">
         <h2>See what others have said to me!</h2>
         <p>
-          <label>Select language</label>
-            <select id="languageCode" onchange="getComments();">
+          <form name="myForm" action="" method="get">
+            <label>Select language</label>
+            <select id="languageCode" name="languageCode" onchange="getComments();">
               <option value = "en">english</option>
               <option value = "zh">chinese</option>
               <option value = "id">indonesian</option>
               <option value = "ko">korean</option>
             </select>
+          </form>
        </p>
         <div id="comments-container"></div>
       </div>

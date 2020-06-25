@@ -16,12 +16,28 @@ document.addEventListener("DOMContentLoaded", function(){
   getComments();
 });
 
-// const selectElement = document.querySelector('#languageCode');
-// if (selectElement != null) {
-//   selectElement.addEventListener('change', (event) => {
-//     getComments();
-//   });
-// }
+function setSelections() {
+    document.myForm.languageCode.value = getQueryValue("languageCode");
+}
+
+function getQueryValue(key)
+{
+    var queryString = window.location.search.substring(1);
+    var queryParams = queryString.split("&");
+    for(var i = 0; i < queryParams.length; i++)
+    {
+        if(queryParams[i].indexOf("=") > 0)
+        {
+            var keyValue = queryParams[i].split("=");
+            if(keyValue[0] == key)
+            {
+                return keyValue[1];
+            }
+        }
+    }
+
+    return null;
+}
 
 /**
  * Adds a random greeting to the page.

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "j-sps-summer20",
+  "private_key_id": "2366e859992aaf4532cc8f923b7ec4cd4063fd17",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC427q+o5H0B4ZZ\ndFcAtqwZbVlnWzDXusoLKVXanEEfW/dTfzVfGRGocsGFLDbJgOxpLdREHxKpeBjJ\nzAxNPdBLnKw0bUpL6k7GxKMdLWoJ4hWE6hEDgHJ6W1DH5p20BgMuEiWivtLnaG2V\n5Edo0R08zy7xVjC1KAQ2iGXBuwz6e+Ou0fuBItgE/+adI1WBBHy+SOrePa0qeDnT\n6QWg7ceDhe7qWMf20DzMSaiScmUNbmDCjT47CZwtFsISjXq3SMlvfU0YZqXIGDnc\n6rwE4/bdCs2Ps08IqEFq//EYDq/aolZp+FUGCSxRtPkVnLPnA+EH0oLw5Z45DEN/\nyQJir/gfAgMBAAECggEAUZABkWOyXi2DxaxjRtlSjdWFgOjnYAf2ZX5TdyVCRofZ\nVGnoLpFtDRm08QFVGwtbQ/0IjxX2sfdfWIpDU0FWykXSZT9jbKNxJppULed/xeSP\nAhoUb6sY14u61LiYFHoipQ00td3kSF33HA+gwkqhz9bKK4mP7B4/3Z/I5fWWAF4x\nWjBfxWwDnuJqGju/1p0h2SsmJptaXNa7kdi6hIW9GwWq52eOysxiAS3PE9xVGSsy\nHOjnUUREfqMSUo0gBk1pcB2pBjpfqdTrcLVTmuHjy6oQIoe/lqpicfBDnwK8i7br\nhs6iOXTxyTU3tISCsn5l1cHuVFRv9khpzgdMY6zIgQKBgQDbNDMx5xNGOE4Hkii/\nns0wdGbnLdmOqxpajDso7lwLc0LTIuiX4pMzLTN757UyGt9bCc5MNjR+Oc6Wlwqp\nQw72MTcKcGzX9hQrc45+ZP0bNjiiURKTWa5VPP18Q4M6n7pFVoxG7l/k8mStsm2x\n/QqczLVnv0pgFQxtn08SOS3BMQKBgQDX45qymliU7PkvJCQbQ2FmXhhF5UjgxWdb\n9rj6gQ9LX3TPqs2ETjd4fEcBskB3Whp8GyrGlVs1yvxgsZdn25Ver5GAs1lCrmKi\nCJr9WStAh3/e/tCXt8/gquwh5k0ZhjwJlqSr0h4c25Ye5LjgfjPWKorisK3L6O1i\ncc0aB4B6TwKBgGLXG8qBplhAZTbWudcFlQInSostSm8hSeXQW5CuQgTLuTMZB4YN\nHVCzLgbNyQ9JvLMBLeuBeZP9HuEaRC1kVme+c1IatYl/pUKefX8SrGpLvae7JMQa\naRh4Qth4XMDfaw9+4gvNyqGihrEnxny+W72uNJIOWEwQ0aTQc8gEzlPRAoGAWj5P\nFSeFrcMdKoJ+AVN6LHNazCTbAPIjkYKhsj0uqoAdcQ1h2VNkxp2UhPYBEqL8fTJS\nAC7AsMzIEJdLxeM5HhpfxR+zSTdiDX9xYkPa25+IaSu1ACaa47wu9sCxK+E7yXpK\nHXS4l7GGoCVVzqmSe4zO/5GBJMKaMFOHu8C1COsCgYB2OZEHrekUbLJCXoCmThU+\nKXE8z8Pt+KBJwMYVTvAJffjf9R8eTjSlpxYMRn/8peoCYm45faUIl+EHbyeLHZGV\nA5S7TF9/xkDdlI9LUgyNl/icIeimiqwkcPjDQ4aCMuHjq5FPvZjk6Fwf4fQnaaEI\nmOjtMRXpGzfCAAp0z0Ovtw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "johanna@j-sps-summer20.iam.gserviceaccount.com",
+  "client_id": "104882185311413062325",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/johanna%40j-sps-summer20.iam.gserviceaccount.com"
+}
