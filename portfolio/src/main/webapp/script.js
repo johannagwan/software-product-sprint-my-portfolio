@@ -13,30 +13,28 @@
 // limitations under the License.
 
 document.addEventListener("DOMContentLoaded", function(){
-  getComments();
+  const queryString = window.location.search;
+  console.log(queryString);
+  const urlParams = new URLSearchParams(queryString);
+  const DEFAULT_LANG = "en";
+  var lang = null;
+
+  if (!urlParams.has('languageCode')) {
+    lang = DEFAULT_LANG;
+    getComments(DEFAULT_LANG);
+  } else {
+    lang = urlParams.get('languageCode')
+    console.log(lang);
+    getComments(lang);
+  }
+  
+  document.getElementById("languageCode").value=lang;
 });
 
-function setSelections() {
-    document.myForm.languageCode.value = getQueryValue("languageCode");
-}
-
-function getQueryValue(key)
-{
-    var queryString = window.location.search.substring(1);
-    var queryParams = queryString.split("&");
-    for(var i = 0; i < queryParams.length; i++)
-    {
-        if(queryParams[i].indexOf("=") > 0)
-        {
-            var keyValue = queryParams[i].split("=");
-            if(keyValue[0] == key)
-            {
-                return keyValue[1];
-            }
-        }
-    }
-
-    return null;
+function changeLanguage() {
+  // var language = document.getElementById("languageCode").value;
+  document.myForm.submit();
+  // getComments(language);
 }
 
 /**
@@ -60,8 +58,8 @@ function getRandomFacts() {
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
-function getComments() {
-  var language = document.getElementById("languageCode").value;
+function getComments(language) {
+  console.log("lang: " + language);
 
   fetch('/data?languageCode=' + language).then(response => response.json()).then((comments) => {
     // comments is an object, not a string, so we have to

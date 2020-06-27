@@ -47,7 +47,6 @@ public class DataServlet extends HttpServlet {
   private final String USERNAME = "username";
   private final String COMMENT_BODY = "commentBody";
   private final String TIMESTAMP = "timestamp";
-  private final String LANGUAGE = "Language";
   private final String LANGUAGE_CODE = "languageCode";
   private Translate translate = TranslateOptions.getDefaultInstance().getService();
 
@@ -60,8 +59,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
-    //String languageCode = request.getParameter("languageCode");
-    String languageCode = request.getParameter("languageCode");
+    String languageCode = request.getParameter(LANGUAGE_CODE);
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -94,7 +92,12 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
     String username = request.getParameter("user-name").trim();
-    String commentBody = request.getParameter("text-input").trim();  
+    String commentBody = request.getParameter("text-input").trim(); 
+    String languageCode = request.getParameter(LANGUAGE_CODE);
+    String DEFAULT_LANG = "en";
+    if (languageCode == null) {
+      languageCode = DEFAULT_LANG;
+    }
     
     Date date = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy hh:mm z");  
@@ -106,15 +109,10 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty(COMMENT_BODY, commentBody);
     commentEntity.setProperty(TIMESTAMP, timestamp);
 
-    // Entity for the current language code chosen.
-    Entity languageEntity = new Entity(LANGUAGE);
-    languageEntity.setProperty(LANGUAGE_CODE, request.getParameter("languageCode"));
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-    datastore.put(languageEntity);
-    
+    datastore.put(commentEntity);	    
+
     // Redirect back to the HTML page.
-    response.sendRedirect("/index.html#comment-section");
+    response.sendRedirect("/index.html?languageCode=" + languageCode);
   }
 }

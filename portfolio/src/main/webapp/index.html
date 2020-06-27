@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="#" />
     <script src="script.js"></script>
   </head>
-  <body onload="setSelections();">
+  <body>
     <div class="header">
       <a href="index.html" class="logo">Johanna</a>
       <div class="header-right">
@@ -108,7 +108,7 @@
         <p>
           <form name="myForm" action="" method="get">
             <label>Select language</label>
-            <select id="languageCode" name="languageCode" onchange="getComments();">
+            <select id="languageCode" name="languageCode" onchange="document.myForm.submit();">
               <option value = "en">english</option>
               <option value = "zh">chinese</option>
               <option value = "id">indonesian</option>
