@@ -21,6 +21,10 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 
@@ -43,14 +47,19 @@ public class DataServlet extends HttpServlet {
   private final String USERNAME = "username";
   private final String COMMENT_BODY = "commentBody";
   private final String TIMESTAMP = "timestamp";
+  private final String LANGUAGE_CODE = "languageCode";
+  private Translate translate = TranslateOptions.getDefaultInstance().getService();
+
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Create Query for Datastore
+    // Create Query for Comment Datastore
     Query query = new Query(COMMENT).addSort(TIMESTAMP, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+    
+    String languageCode = request.getParameter(LANGUAGE_CODE);
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -58,44 +67,52 @@ public class DataServlet extends HttpServlet {
       String commentBody = (String) entity.getProperty(COMMENT_BODY); 
       String timestamp = (String) entity.getProperty(TIMESTAMP);
 
-      Comment comment = new Comment(username, commentBody, timestamp);
+      // Do the translation for comment body.
+      Translation commentBodyTranslation =
+        translate.translate(commentBody, Translate.TranslateOption.targetLanguage(languageCode));
+      String commentBodyTranslatedText = commentBodyTranslation.getTranslatedText();
+
+      // Do the translation for timestamp.
+      Translation timestampTranslation =
+        translate.translate(timestamp, Translate.TranslateOption.targetLanguage(languageCode));
+      String timestampTranslatedText = timestampTranslation.getTranslatedText();
+
+      Comment comment = new Comment(username, commentBodyTranslatedText, timestampTranslatedText);
       comments.add(comment);
     }
 
     Gson gson = new Gson();
 
-    response.setContentType("application/json;");
+    response.setContentType("application/json; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
     response.getWriter().println(gson.toJson(comments));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
-    String username = getParameter(request, "user-name").trim();
-    String commentBody = getParameter(request, "text-input").trim();  
+    String username = request.getParameter("user-name").trim();
+    String commentBody = request.getParameter("text-input").trim(); 
+    String languageCode = request.getParameter("languageCodePost");
+    String DEFAULT_LANG = "en";
+    if (languageCode == null) {
+      languageCode = DEFAULT_LANG;
+    }
     
     Date date = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy hh:mm z");  
     String timestamp = dateFormat.format(date).toString();
     
+    // Entity for the comment.
     Entity commentEntity = new Entity(COMMENT);
     commentEntity.setProperty(USERNAME, username);
     commentEntity.setProperty(COMMENT_BODY, commentBody);
     commentEntity.setProperty(TIMESTAMP, timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-    
-    // Redirect back to the HTML page.
-    response.sendRedirect("/index.html#comment-section");
-  }
+    datastore.put(commentEntity);	    
 
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
-  private String getParameter(HttpServletRequest request, String name) {
-    String value = request.getParameter(name);
-    return value;
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html?languageCode=" + languageCode + "#comment-section");
   }
 }

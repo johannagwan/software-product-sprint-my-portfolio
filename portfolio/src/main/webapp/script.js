@@ -13,9 +13,22 @@
 // limitations under the License.
 
 document.addEventListener("DOMContentLoaded", function(){
-  getComments();
-});
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const DEFAULT_LANG = "en";
+  var lang = null;
 
+  if (!urlParams.has('languageCode')) {
+    lang = DEFAULT_LANG;
+    getComments(DEFAULT_LANG);
+  } else {
+    lang = urlParams.get('languageCode')
+    getComments(lang);
+  }
+  
+  document.getElementById("languageCodePost").value=lang;
+  document.getElementById("languageCode").value=lang;
+});
 
 /**
  * Adds a random greeting to the page.
@@ -38,8 +51,8 @@ function getRandomFacts() {
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
-function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+function getComments(language) {
+  fetch('/data?languageCode=' + language).then(response => response.json()).then((comments) => {
     // comments is an object, not a string, so we have to
     // reference its fields to create HTML content
     const commentsListElement = document.getElementById('comments-container');

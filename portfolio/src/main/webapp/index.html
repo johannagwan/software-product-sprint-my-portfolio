@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Johanna's Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="#" />
     <script src="script.js"></script>
   </head>
   <body>
@@ -94,6 +95,13 @@
 
       <form id="post-comment" action="/data" method="POST">
         <h2>Say hi to me!</h2>
+        <label>Select language</label>
+            <select id="languageCodePost" name="languageCodePost">
+              <option value = "en">english</option>
+              <option value = "zh">chinese</option>
+              <option value = "id">indonesian</option>
+              <option value = "ko">korean</option>
+            </select>
         <p>Name: </p>
         <textarea name="user-name" required></textarea>
         <p>Comment: </p>
@@ -104,6 +112,17 @@
 
       <div id="comment-section">
         <h2>See what others have said to me!</h2>
+        <p>
+          <form name="myForm" action="" method="get">
+            <label>Select language</label>
+            <select id="languageCode" name="languageCode" onchange="document.myForm.submit();">
+              <option value = "en">english</option>
+              <option value = "zh">chinese</option>
+              <option value = "id">indonesian</option>
+              <option value = "ko">korean</option>
+            </select>
+          </form>
+       </p>
         <div id="comments-container"></div>
       </div>
       
