@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function(){
     getComments(lang);
   }
   
+  document.getElementById("languageCodePost").value=lang;
   document.getElementById("languageCode").value=lang;
 });
 

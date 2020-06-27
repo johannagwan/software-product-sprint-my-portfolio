@@ -93,7 +93,7 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form
     String username = request.getParameter("user-name").trim();
     String commentBody = request.getParameter("text-input").trim(); 
-    String languageCode = request.getParameter(LANGUAGE_CODE);
+    String languageCode = request.getParameter("languageCodePost");
     String DEFAULT_LANG = "en";
     if (languageCode == null) {
       languageCode = DEFAULT_LANG;
@@ -113,6 +113,6 @@ public class DataServlet extends HttpServlet {
     datastore.put(commentEntity);	    
 
     // Redirect back to the HTML page.
-    response.sendRedirect("/index.html?languageCode=" + languageCode);
+    response.sendRedirect("/index.html?languageCode=" + languageCode + "#comment-section");
   }
 }

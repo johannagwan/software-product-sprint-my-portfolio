@@ -95,6 +95,13 @@
 
       <form id="post-comment" action="/data" method="POST">
         <h2>Say hi to me!</h2>
+        <label>Select language</label>
+            <select id="languageCodePost" name="languageCodePost">
+              <option value = "en">english</option>
+              <option value = "zh">chinese</option>
+              <option value = "id">indonesian</option>
+              <option value = "ko">korean</option>
+            </select>
         <p>Name: </p>
         <textarea name="user-name" required></textarea>
         <p>Comment: </p>
