@@ -14,7 +14,6 @@
 
 document.addEventListener("DOMContentLoaded", function(){
   const queryString = window.location.search;
-  console.log(queryString);
   const urlParams = new URLSearchParams(queryString);
   const DEFAULT_LANG = "en";
   var lang = null;
@@ -24,18 +23,11 @@ document.addEventListener("DOMContentLoaded", function(){
     getComments(DEFAULT_LANG);
   } else {
     lang = urlParams.get('languageCode')
-    console.log(lang);
     getComments(lang);
   }
   
   document.getElementById("languageCode").value=lang;
 });
-
-function changeLanguage() {
-  // var language = document.getElementById("languageCode").value;
-  document.myForm.submit();
-  // getComments(language);
-}
 
 /**
  * Adds a random greeting to the page.
@@ -59,8 +51,6 @@ function getRandomFacts() {
  * Fetches stats from the servers and adds them to the DOM.
  */
 function getComments(language) {
-  console.log("lang: " + language);
-
   fetch('/data?languageCode=' + language).then(response => response.json()).then((comments) => {
     // comments is an object, not a string, so we have to
     // reference its fields to create HTML content
