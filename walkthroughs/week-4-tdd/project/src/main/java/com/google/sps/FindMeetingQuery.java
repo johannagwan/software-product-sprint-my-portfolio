@@ -23,8 +23,7 @@ import java.util.List;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    int meetingDuration = (int) request.getDuration();
-    if (meetingDuration > TimeRange.WHOLE_DAY.duration()) {
+    if ((int) request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return Arrays.asList();
     }
 
@@ -32,10 +31,21 @@ public final class FindMeetingQuery {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
-    List<TimeRange> slotsAvailable = new ArrayList<>();
-    List<Event> eventsList = new ArrayList<>(events);
+    List<Event> updatedEvents = addUpdatedEvents(events, request);
+    // If ALL the events are for non-meeting attendees, just return list of whole day.
+    if (updatedEvents.isEmpty()) {
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+
+    Collection<TimeRange> slotsAvailable = findSlotsAvailable(updatedEvents, request);
+
+    return slotsAvailable;
+  }
+
+  private List<Event> addUpdatedEvents(Collection<Event> events, MeetingRequest request) {
     List<Event> updatedEvents = new ArrayList<>();
-    
+    List<Event> eventsList = new ArrayList<>(events);
+
     Collections.sort(eventsList, new Comparator<Event>() {
       @Override
       public int compare(Event a, Event b) {
@@ -43,11 +53,10 @@ public final class FindMeetingQuery {
       }
     });
 
-    // Add earliest VALID event to updatedEvents first.
+    // Add earliest VALID event to updatedEvents first, to use as a comparison for subsequent event.
     int firstEventNum = 0;
     boolean findingFirstEvent = true;
     Collection<String> meetingAttendees = request.getAttendees();
-
     while (findingFirstEvent && firstEventNum < events.size()) {
       Event event = eventsList.get(firstEventNum);
       Collection<String> eventAttendees = event.getAttendees();
@@ -63,6 +72,7 @@ public final class FindMeetingQuery {
       findingFirstEvent = false;
     }
 
+    // Combine events if they overlap or contain each other so that we don't need to double count overlapping events.
     int updatedEventsIdx = 0;
     for (int i = firstEventNum; i < events.size(); i++) {
       Event event = eventsList.get(i);
@@ -91,18 +101,20 @@ public final class FindMeetingQuery {
       }      
     }
 
-    // If ALL the events are for non-meeting attendees, just return list of whole day.
-    if (updatedEvents.isEmpty()) {
-      return Arrays.asList(TimeRange.WHOLE_DAY);
-    }
+    return updatedEvents;
+  }
 
+  private Collection<TimeRange> findSlotsAvailable(List<Event> updatedEvents, MeetingRequest request) {
+    Collection<TimeRange> slotsAvailable = new ArrayList<>();
     int eventIdx = 0;
     Event event = updatedEvents.get(eventIdx);
     int currStartingTime = TimeRange.START_OF_DAY;
     int currEndingTime = event.getWhen().start();
+
+    // Add timerange to available slots if the duration of the timerange is longer than the meeting duration.
     while (currStartingTime < TimeRange.END_OF_DAY && currEndingTime <= TimeRange.END_OF_DAY) {
       int dur = currEndingTime - currStartingTime;
-      if (dur >= meetingDuration) {
+      if (dur >= (int) request.getDuration()) {
         boolean inclusive = false;
         if (currEndingTime == TimeRange.END_OF_DAY) {
           inclusive = true;
