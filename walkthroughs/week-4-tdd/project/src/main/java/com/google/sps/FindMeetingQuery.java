@@ -69,7 +69,7 @@ public final class FindMeetingQuery {
       Collection<String> eventAttendees = event.getAttendees();
 
       // If every event attendees is NOT a meeting attendee, ignore the event.
-      if (!meetingAttendees.contains(eventAttendees)) {
+      if (!meetingAttendees.containsAll(eventAttendees)) {
         continue;
       }
 
@@ -91,6 +91,11 @@ public final class FindMeetingQuery {
       }      
     }
 
+    // If ALL the events are for non-meeting attendees, just return list of whole day.
+    if (updatedEvents.isEmpty()) {
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+
     int eventIdx = 0;
     Event event = updatedEvents.get(eventIdx);
     int currStartingTime = TimeRange.START_OF_DAY;
@@ -109,7 +114,7 @@ public final class FindMeetingQuery {
       currStartingTime = updatedEvents.get(eventIdx).getWhen().end();
       if (currEndingTime == TimeRange.END_OF_DAY) {
         break;
-      } else if (eventIdx == events.size() - 1) {
+      } else if (eventIdx == updatedEvents.size() - 1) {
         currEndingTime = TimeRange.END_OF_DAY;
       } else {
         eventIdx++;
@@ -117,14 +122,6 @@ public final class FindMeetingQuery {
       }
     }
 
-    // final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
-    // final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
-    // Collection<TimeRange> expected =
-    //     Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-    //         TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
-    // return expected;
-
     return slotsAvailable;
-    
   }
 }
